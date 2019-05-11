@@ -1,0 +1,28 @@
+title: Hamed Jafarzadeh
+description: My Personal Blog
+author: Hamed Jafarzadeh
+logo: /assets/avatar.png
+github: https://github.com/HamedJafarzadeh
+about: Computer & Electronics Engineer
+
+baseurl: ""
+url: ""
+
+allowsearch: false
+
+disqus_shortname: aboutashu
+google_analytics: UA-140022337-1
+
+share:
+  twitter_username: \HJafarzadeh511
+  fb_appid: 000000000000
+
+
+enableTags: true
+tagarray: []
+
+paginate: 20
+per_page: 20
+paginate_path: "/page:num/"
+markdown: kramdown
+gems: [jekyll-paginate, jekyll-gist]
