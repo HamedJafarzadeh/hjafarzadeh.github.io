@@ -92,7 +92,7 @@ ret, mtx, dist, rvecs, tvecs = cv2.calibrateCamera(objpoints, imgpoints, gray.sh
 np.save('./calib', [mtx, dist, rvecs, tvecs])
 
 ```
-![Result](Selection_095.png)
+![Result](https://raw.githubusercontent.com/HamedJafarzadeh/HamedJafarzadeh.github.io/master/assets/Selection_095.png)
 
 - After you successfuly got the calibration values, you can include these lines at the end of the code to visually examine the differences. However in my case, my D435 seems perfectly calibrated and I can't see any difference visually.
 
@@ -119,7 +119,7 @@ for fname in images:
     plt.pause(0.001)
 
 ```
-![comparing]({{site.url}}/Selection_096.png)
+![comparing](https://raw.githubusercontent.com/HamedJafarzadeh/HamedJafarzadeh.github.io/master/assets/Selection_096.png)
 
 
 # Converting bag file to png files
