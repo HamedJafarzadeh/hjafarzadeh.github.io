@@ -22,6 +22,7 @@ GEM
     jekyll-gist (1.4.0)
       octokit (~> 4.2)
     jekyll-paginate (1.1.0)
+    jekyll-postfiles (2.1.1)
     jekyll-sass-converter (1.5.0)
       sass (~> 3.4)
     jekyll-watch (1.5.0)
@@ -55,9 +56,10 @@ DEPENDENCIES
   jekyll
   jekyll-gist
   jekyll-paginate
+  jekyll-postfiles
   jekyll-watch
   kramdown
   rouge
 
 BUNDLED WITH
-   1.14.6
+   1.17.3

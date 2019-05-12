@@ -152,7 +152,7 @@ First you need to run `roscore`.
 
 * copy these configuration to this file
 
-* ```xml
+```xml
   Panels:
     - Class: rviz/Displays
       Help Height: 78

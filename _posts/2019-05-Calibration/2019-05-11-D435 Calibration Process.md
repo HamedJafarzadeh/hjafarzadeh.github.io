@@ -27,11 +27,10 @@ You can find more details specially on theories behind algorithms on <https://op
 
 
 
-
 # Calibration process
 
 - I have used [This](<https://trojan03.github.io/#!/blog/4>) as a start point.
-
+- For the Checker board you could use [this](http://wiki.ros.org/camera_calibration/Tutorials/StereoCalibration#Before_Starting) checkboards. I've used the 8x6 checkboard. However when you count the rectangles, you'll get 9x7, to be honest I don't know the reason yet. I checked several other checkboard and this is seems to be same in their checkboards though.
 - I have record a bag file of myself, moving a checkboard around, you can refer to my [previous article](<https://hamedjafarzadeh.github.io/robotics/2019/05/04/Record-a-ROS-bag-file-of-Intel-Real-sense-D435.html>) on how to record a bag file.  Later I found that maybe this was a quick way, since a simple 2 min bag file, results in too many pictures that was troublesome for me to pick images from them. maybe you could use rqt_image_viewer instead.
 
 - I faced following buffer issue while recording the bag file :
@@ -46,13 +45,86 @@ You can find more details specially on theories behind algorithms on <https://op
 
 - After recording the files I have used the [Python code](#Converting-bag-file-to-png-files) to convert the bag to png file and finally I choose about 10 pictures of them representing different poses of checkerboard.
 
-- 
+- After selecting the pictures. I put them in the same directory of the code and I've used the following code for getting calibration values :
+- be aware that you have to use python 2.7 from ROS package
 
-  
+```python
+import numpy as np
+import cv2
+import glob
+from matplotlib import pyplot as plt #optional, for comparing the results
 
-  # Converting bag file to png files
+# termination criteria
+criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 30, 0.001)
 
-  I used the following script from [here](<https://gist.github.com/wngreene/835cda68ddd9c5416defce876a4d7dd9>).
+# prepare object points for a 8x6 chess board
+objp = np.zeros((6*8,3), np.float32)
+objp[:,:2] = np.mgrid[0:8,0:6].T.reshape(-1,2)
+
+# Arrays to store object points and image points from all the images.
+objpoints = [] # 3d point in real world space
+imgpoints = [] # 2d points in image plane.
+
+images = glob.glob('*.png')
+gray = np.zeros((100,100,3), np.uint8)
+for fname in images:
+    img = cv2.imread(fname)
+    gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
+
+    # Find the chess board corners
+    ret, corners = cv2.findChessboardCorners(gray, (8,6),None)
+
+    # If found, add object points, image points (after refining them)
+    if ret == True:
+        objpoints.append(objp)
+
+        corners2 = cv2.cornerSubPix(gray,corners,(11,11),(-1,-1),criteria)
+        imgpoints.append(corners2)
+
+        # Draw and display the corners
+        img = cv2.drawChessboardCorners(img, (8,6), corners2,ret)
+        cv2.imshow('img',img)
+        cv2.waitKey(500)
+
+cv2.destroyAllWindows()
+
+ret, mtx, dist, rvecs, tvecs = cv2.calibrateCamera(objpoints, imgpoints, gray.shape[::-1],None,None)
+np.save('./calib', [mtx, dist, rvecs, tvecs])
+
+```
+![Result](Selection_095.png)
+
+- After you successfuly got the calibration values, you can include these lines at the end of the code to visually examine the differences. However in my case, my D435 seems perfectly calibrated and I can't see any difference visually.
+
+```python
+
+for fname in images:
+    img = cv2.imread(fname)
+    gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
+
+    h,  w = gray.shape[:2]
+    newcameramtx, roi=cv2.getOptimalNewCameraMatrix(mtx,dist,(w,h),1,(w,h))
+
+    # undistort
+    dst = cv2.undistort(img, mtx, dist, None, newcameramtx)
+
+    # crop the image
+    x,y,w,h = roi
+    dst = dst[y:y+h, x:x+w]
+    plt.subplot(2,1,1)
+    plt.imshow(img)
+    plt.subplot(2,1,2)
+    plt.imshow(dst)
+    plt.waitforbuttonpress()
+    plt.pause(0.001)
+
+```
+![](2019-05-12-12-49-23.png)
+
+
+# Converting bag file to png files
+
+I used the following script from [here](<https://gist.github.com/wngreene/835cda68ddd9c5416defce876a4d7dd9>).
 
   ```python
   #!/usr/bin/env python
