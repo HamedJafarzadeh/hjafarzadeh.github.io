@@ -7,6 +7,8 @@ categories: robotics
 
 Today’s cheap pinhole cameras introduces a lot of distortion to images. Two major distortions are radial distortion and tangential distortion.
 
+> However Intel Realsense has internal processor which will use default calibration values, called `golden`, to do the required process to output a calibrated  image. But maybe for some reason or after a long time, using camera, you want to calibrate the camera. You can use this article as a reference.
+
 Due to radial distortion, straight lines will appear curved. Its effect is more as we move away from the center of image. For example, one image is shown below, where two edges of a chess board are marked with red lines. But you can see that border is not a straight line and doesn’t match with the red line. All the expected straight lines are bulged out. Visit [Distortion (optics)](http://en.wikipedia.org/wiki/Distortion_(optics)) for more details.
 
 
@@ -17,15 +19,10 @@ Due to radial distortion, straight lines will appear curved. Its effect is more 
 
 You can find more details specially on theories behind algorithms on <https://opencv-python-tutroals.readthedocs.io/en/latest/py_tutorials/py_calib3d/py_calibration/py_calibration.html>.
 
+## Calibration process
 
-
-
-# Calibration process
-
-- I have used [This](<https://trojan03.github.io/#!/blog/4>) as a start point.
-- For the Checker board you could use [this](http://wiki.ros.org/camera_calibration/Tutorials/StereoCalibration#Before_Starting) checkboards. I've used the 8x6 checkboard. However when you count the rectangles, you'll get 9x7, to be honest I don't know the reason yet. I checked several other checkboard and this is seems to be same in their checkboards though.
-- I have record a bag file of myself, moving a checkboard around, you can refer to my [previous article](<https://hamedjafarzadeh.github.io/robotics/2019/05/04/Record-a-ROS-bag-file-of-Intel-Real-sense-D435.html>) on how to record a bag file.  Later I found that maybe this was a quick way, since a simple 2 min bag file, results in too many pictures that was troublesome for me to pick images from them. maybe you could use rqt_image_viewer instead.
-
+- First you need a calibration checker board, For the Checker board you could use [this](http://wiki.ros.org/camera_calibration/Tutorials/StereoCalibration#Before_Starting) checkboards. I've used the 8x6 checkboard. However when you count the rectangles, you'll get 9x7, to be honest I don't know the reason yet. I checked several other checkboard and this is seems to be same in their checkboards though.
+- I have record a bag file of myself, moving a checkboard around, you can refer to my [previous article](<https://hamedjafarzadeh.github.io/robotics/2019/05/04/Record-a-ROS-bag-file-of-Intel-Real-sense-D435.html>) on how to record a bag file.
 - I faced following buffer issue while recording the bag file :
 
   `rosbag record buffer exceeded.  Dropping oldest queued message.` 
@@ -35,8 +32,52 @@ You can find more details specially on theories behind algorithms on <https://op
   ``` bash
   rosbag record /rscamera/depth/image_rect_raw /rscamera/color/image_raw /rscamera/infra1/image_rect_raw /rscamera/infra2/image_rect_raw /rscamera/color/camera_info /rscamera/depth/camera_info /rscamera/extrinsics/depth_to_color /rscamera/extrinsics/depth_to_infra1 /rscamera/extrinsics/depth_to_infra
   ```
+- The next step is to use this dataset for calibration and we have two options here.
 
-- After recording the files I have used the [Python code](#Converting-bag-file-to-png-files) to convert the bag to png file and finally I choose about 10 pictures of them representing different poses of checkerboard.
+
+### Automatic Calibration process Using ROS calibrator
+
+- This tutorial is based on (http://wiki.ros.org/camera_calibration/Tutorials/MonocularCalibration)
+- Install camera_calibration package
+`rosdep install camera_calibration`
+- Modify and Run the following command 
+` rosrun camera_calibration cameracalibrator.py --size 8x6 --square 0.108 image:=/rscamera/color/image_raw `
+- Run this code simultaneously
+  ` rosbag play Checkboard.bag `
+- Wait for the bars on the screen to reach to green state, then calibrate button turns on and you can press it to get the calibration values:
+
+```bash
+width
+640
+
+height
+480
+
+[narrow_stereo]
+
+camera matrix
+617.229503 0.000000 313.286146
+0.000000 618.088417 225.395544
+0.000000 0.000000 1.000000
+
+distortion
+0.127719 -0.261493 -0.007646 -0.009921 0.000000
+
+rectification
+1.000000 0.000000 0.000000
+0.000000 1.000000 0.000000
+0.000000 0.000000 1.000000
+
+projection
+627.729309 0.000000 308.005000 0.000000
+0.000000 631.422485 222.508865 0.000000
+0.000000 0.000000 1.000000 0.000000
+```
+
+### Manual Calibration process - Using our own python code Not recommended
+
+- I have used [This](<https://trojan03.github.io/#!/blog/4>) as a start point.
+- After recording the files I have used the [Python code](#Converting-bag-file-to-png-files) to convert the bag to png file and finally I choose about 10 pictures of them representing different poses of checkerboard, more pictures and poses, better estimations.
 
 - After selecting the pictures. I put them in the same directory of the code and I've used the following code for getting calibration values :
 - be aware that you have to use python 2.7 from ROS package
@@ -118,9 +159,11 @@ for fname in images:
 - In order to see factory calibrated values, head to [this documentation](https://www.intel.com/content/dam/support/us/en/documents/emerging-technologies/intel-realsense-technology/RealSense_D400_Dyn_Calib_User_Guide.pdf) and install the dynamic calibration tool.
 - after installing the dynamic calibration tool, you can use the following command to read out the factory settings :
 
-```bash
-Intel.Realsense.CustomRW -r
-```
+`Intel.Realsense.CustomRW -r`
+
+or using following command to read it to a file 
+
+`Intel.Realsense.CustomRW -r -f factorycalibration.xml`
 
 - after execuation you have to get some files similar to below :
 
@@ -161,7 +204,9 @@ Calibration parameters from the device:
   TranslationLeftColor: 14.770332 0.064966 0.261356
 ```
 
-# Converting bag file to png files
+- at the end of [this documentation](https://www.intel.com/content/dam/support/us/en/documents/emerging-technologies/intel-realsense-technology/RealSense_D400_Dyn_Calib_User_Guide.pdf), you can find some details on how to write calibration data to Intel realsense.
+
+## Converting bag file to png files
 
 I used the following script from [here](<https://gist.github.com/wngreene/835cda68ddd9c5416defce876a4d7dd9>).
 
