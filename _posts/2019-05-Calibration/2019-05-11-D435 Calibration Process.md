@@ -119,7 +119,7 @@ for fname in images:
     plt.pause(0.001)
 
 ```
-![](2019-05-12-12-49-23.png)
+![comparing](2019-05-12-12-49-23.png)
 
 
 # Converting bag file to png files
