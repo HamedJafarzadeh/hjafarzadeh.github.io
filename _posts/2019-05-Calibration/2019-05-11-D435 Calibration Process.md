@@ -3,13 +3,6 @@ layout: post
 title:  Realsense D435 Calibration Process using ROS
 categories: robotics
 ---
-
- **Author**
-
-- Hamed Jafarzadeh - Hamed.Jafarzadeh@Skoltech.ru
-- Skolkovo Institue of science and technology - [Mobile Robotics Lab](<http://sites.skoltech.ru/mobilerobotics/>)
-- Under supervision of [Dr. Gonzalo Ferrer](<https://faculty.skoltech.ru/people/gonzaloferrer>)
-
 # Camera Calibration
 
 Today’s cheap pinhole cameras introduces a lot of distortion to images. Two major distortions are radial distortion and tangential distortion.
