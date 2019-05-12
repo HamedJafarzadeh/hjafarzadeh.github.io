@@ -114,6 +114,52 @@ for fname in images:
 ```
 ![comparing](https://raw.githubusercontent.com/HamedJafarzadeh/HamedJafarzadeh.github.io/master/assets/Selection_096.png)
 
+- You can compare your result with RealSense factory calibration values.
+- In order to see factory calibrated values, head to [this documentation](https://www.intel.com/content/dam/support/us/en/documents/emerging-technologies/intel-realsense-technology/RealSense_D400_Dyn_Calib_User_Guide.pdf) and install the dynamic calibration tool.
+- after installing the dynamic calibration tool, you can use the following command to read out the factory settings :
+
+```bash
+Intel.Realsense.CustomRW -r
+```
+
+- after execuation you have to get some files similar to below :
+
+```bash
+CustomRW for Intel RealSense D400, Version: 2.6.8.0
+
+  Device PID: 0B07
+  Device name: Intel RealSense D435
+  Serial number: 814412070498
+  Firmware version: 05.11.01.100
+
+Calibration parameters from the device:
+  resolutionLeftRight: 1280 800
+
+  FocalLengthLeft: 633.982727 633.596069
+  PrincipalPointLeft: 624.025696 389.514771
+  DistortionLeft: -0.059070 0.067295 -0.000483 -0.000501 -0.020985
+
+  FocalLengthRight: 635.762024 635.201050
+  PrincipalPointRight: 638.055481 389.037231
+  DistortionRight: -0.058455 0.066203 -0.000064 0.000548 -0.021034
+
+  RotationLeftRight: 0.999992 -0.003604 0.001747
+                     0.003606 0.999993 -0.000842
+                     -0.001744 0.000848 0.999998
+  TranslationLeftRight: -49.905933 -0.295381 0.184796
+
+  HasRGB: 1
+
+  resolutionRGB: 1920 1080
+
+  FocalLengthColor: 1389.174438 1389.895752
+  PrincipalPointColor: 973.216919 534.609375
+  DistortionColor: 0.000000 0.000000 0.000000 0.000000 0.000000
+  RotationLeftColor: 0.999978 0.004944 0.004345
+                     -0.004936 0.999986 -0.001922
+                     -0.004355 0.001900 0.999989
+  TranslationLeftColor: 14.770332 0.064966 0.261356
+```
 
 # Converting bag file to png files
 
@@ -155,7 +201,7 @@ I used the following script from [here](<https://gist.github.com/wngreene/835cda
       count = 0
       for topic, msg, t in bag.read_messages(topics=[args.image_topic]):
           cv_img = bridge.imgmsg_to_cv2(msg, desired_encoding="passthrough")
-          
+
           cv2.imwrite(os.path.join(args.output_dir, "frame%06i.png" % count), cv_img)
           print "Wrote image %i" % count
   
