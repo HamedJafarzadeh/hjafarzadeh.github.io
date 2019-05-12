@@ -119,7 +119,7 @@ for fname in images:
     plt.pause(0.001)
 
 ```
-![comparing](Selection_096.png)
+![comparing]({{site.url}}/Selection_096.png)
 
 
 # Converting bag file to png files
