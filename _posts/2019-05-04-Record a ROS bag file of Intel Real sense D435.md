@@ -5,6 +5,32 @@ categories: robotics
 ---
 # Record a ROS bag file of Intel Real sense D435
 
+If it is your first time, you need to make several configurations, please proceed to [First Time Setup](#first-time-setup).
+
+## Quick check list :
+
+- Open your terminal and enter (I'm using terminator, which gives your better options to manage your terminal windows)
+
+  ```bash
+  roscore
+  ```
+- Open another terminal and run 
+
+ ```bash
+  roslaunch realsense2_camera rs_camera_record.launch
+  ```
+
+- Open another terminal, navigate to your rviz configuration and run the following command
+
+```bash
+  cd thesisproject/realsense/rviz
+  rviz pointcloud.rviz
+  ```
+
+
+
+## First Time Setup
+
 First you need to run `roscore`.
 
 - Open your terminal and enter (I'm using terminator, which gives your better options to manage your terminal windows)
@@ -135,7 +161,7 @@ First you need to run `roscore`.
 * now you should run the following command to connect RealSense to ROS.
 
 * ```bash
-  roslaunch realsense2_camera rs_camera_record.launchخ
+  roslaunch realsense2_camera rs_camera_record.launch
   ```
 
 * unless you didn't receive any error, you are good to go and ROS is connected to RealSense. In order to verify your configuration you can use following command in your terminal to see if RealSense topics are published successfully.

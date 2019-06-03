@@ -14,7 +14,7 @@ categories: robotics
 ## Abstract
 Visual Odometry is an incremental process which estimates the 3D pose of the camera from visual data.**The final goal of visual odometry is to estimate the movement of the camera in the environment.** This research area is relatively new and several methods and algorithm are already published. In  [the reference article][https://link.springer.com/article/10.1007/s11554-017-0670-y] , they compared several RGB-D Visual Odometry techniques to the date (2017).They used a mobile device equipped with a RGB-D camera and they measure the accuracy of each algorithm as well as CPU load. In this summary, I will summarize the main points of the article to outline the main ideas and achievements, additionally I will add some other references that helped me to understand the points better.
 ## Introduction
-Depth sensors like kinect are being used in different application and industries in order to provide 3D data at relatively low cost. [Khoshelham et al][Khoshelham] evaluated experimentally the  accuracy of kinect sensors and proposed a `noise model` which explains why the depth error grows quadratically with the distance to the objects. The accuracy also depends on the tilt of the surface normal w.r.t the camera viewpoint and the properties of the object material. There were several attempts and products which you can find in [small size and embedded depth sensor section](#Small-size-and-embedded-depth-sensors) you can find some informations in this regard. ![Fig 1](./imgs/Selection_055.png)
+Depth sensors like kinect are being used in different application and industries in order to provide 3D data at relatively low cost. [Khoshelham et al][Khoshelham] evaluated experimentally the  accuracy of kinect sensors and proposed a `noise model` which explains why the depth error grows quadratically with the distance to the objects. The accuracy also depends on the tilt of the surface normal w.r.t the camera viewpoint and the properties of the object material. There were several attempts and products which you can find in [small size and embedded depth sensor section](#Small-size-and-embedded-depth-sensors) you can find some informations in this regard. ![Fig 1](https://raw.githubusercontent.com/HamedJafarzadeh/VisualOdometry/master/imgs/Selection_055.png)
 
 Reference paper authors proposed a benchmark and an evaluation of state-of-the-art Visual Odomtery (VO) algorithms suitable for running in real time on mobile devices with RGB-D sensor. Aim of this summary is on different algorithms and their performance, for more information on Visual Odometry and more detail information, reader can check [the reference article][https://link.springer.com/article/10.1007/s11554-017-0670-y] .
 
@@ -42,7 +42,7 @@ Reference paper authors proposed a benchmark and an evaluation of state-of-the-a
 
 ## RGB-d Visual odometry methods
 
-​    ![1554888824498](./imgs/1554888824498.png)
+​    ![1554888824498](https://raw.githubusercontent.com/HamedJafarzadeh/VisualOdometry/master/imgs/1554888824498.png)
 
 
 
@@ -134,7 +134,7 @@ Reference paper authors proposed a benchmark and an evaluation of state-of-the-a
 #### Fovis | *Image-Based | Feature-Based*
 Fovis [20] is a fast visual odometry library developed for micro aerial vehicles (MAV). Feature based with frame-to-key-frame matching strategy.
 
-![](./imgs/11554_2017_670_Fig3.gif)
+![](https://raw.githubusercontent.com/HamedJafarzadeh/VisualOdometry/master/imgs/11554_2017_670_Fig3.gif)
 
 ----
 
@@ -148,7 +148,7 @@ Image-based approach inspired by Steinbrucker et al works  [55] with a frame-to-
 
 First, the light intensity of a 3D point is considered constant between frames, then the angular and translational speed are supposed to be constant between two frames. The aglorithm finds the transformation relating two frames by minimizing the difference in intesity between warped current RGB-D frame to the previous one.
 
-![](./imgs/11554_2017_670_Fig4_HTML.gif)
+![](https://raw.githubusercontent.com/HamedJafarzadeh/VisualOdometry/master/imgs/11554_2017_670_Fig4_HTML.gif)
 
 
 
@@ -156,13 +156,13 @@ First, the light intensity of a 3D point is considered constant between frames, 
 
 It is inspired by the point cloud registration algorithm of KinectFusion [[32](https://link.springer.com/article/10.1007/s11554-017-0670-y#CR32)]. KinectFusion ICP variant is based on a projection based heuristic association function with a point-to-plane error metric. Assuming a small rotation between the two frames, the minimization of the point-to-plane error is reduced to a linear least square problem.
 
-![](./imgs/11554_2017_670_Fig5_HTML.gif)
+![](https://raw.githubusercontent.com/HamedJafarzadeh/VisualOdometry/master/imgs/11554_2017_670_Fig5_HTML.gif)
 
 ##### 	OCV RGBDICP  *| Image-Based | Direct*
 
 It is a combination of OCV RGBD and ICP, introduced to solve the linear least square problems of  OCV ICP and RGBD methods.
 
-![](./imgs/11554_2017_670_Fig6_HTML.gif)
+![](https://raw.githubusercontent.com/HamedJafarzadeh/VisualOdometry/master/imgs/11554_2017_670_Fig6_HTML.gif)
 
 ----
 
@@ -172,7 +172,7 @@ It is a direct image-based method with a frame-to-frame matching strategy.
 
 *(I didn't understand it completely)*
 
-![](./imgs/11554_2017_670_Fig7_HTML.gif)
+![](https://raw.githubusercontent.com/HamedJafarzadeh/VisualOdometry/master/imgs/11554_2017_670_Fig7_HTML.gif)
 
 
 
@@ -182,7 +182,7 @@ It is a direct image-based method with a frame-to-frame matching strategy.
 
 Stückler et al. [[56](https://link.springer.com/article/10.1007/s11554-017-0670-y#CR56)] proposed a 3D feature-based approach with a frame-to-frame matching strategy in which each frame is viewed as an octree of surfels. The originality of the approach is that multiple levels of resolution can be used simultaneously since each parent node of the octree encodes the information of their children node
 
-![](./imgs/11554_2017_670_Fig8_HTML.gif)
+![](https://raw.githubusercontent.com/HamedJafarzadeh/VisualOdometry/master/imgs/11554_2017_670_Fig8_HTML.gif)
 
 -----
 
@@ -236,15 +236,15 @@ There are two well-known metrics that can be used to estimate the accuracy of th
 
 ### Results
 
-![](./imgs/Selection_069.png)
+![](https://raw.githubusercontent.com/HamedJafarzadeh/VisualOdometry/master/imgs/Selection_069.png)
 
 **Lower RPE Better accuracy.**
 
-![](./imgs/Selection_065.png)
+![](https://raw.githubusercontent.com/HamedJafarzadeh/VisualOdometry/master/imgs/Selection_065.png)
 
-![](./imgs/Selection_066.png)
+![](https://raw.githubusercontent.com/HamedJafarzadeh/VisualOdometry/master/imgs/Selection_066.png)
 
-![](./imgs/Selection_068.png)
+![](https://raw.githubusercontent.com/HamedJafarzadeh/VisualOdometry/master/imgs/Selection_068.png)
 
 ### Results outline 
 
@@ -310,7 +310,7 @@ a collection of different RGB-D image sequences meant to benchmark the SLAM and 
 
 Handa created the ICL-NUIM dataset composed of synthetic images of indoor scenes generated by POVRay. Although the main foucs of the dataset is to provide a method to benchmark the surface reconstruction accuracy, it has been used to evaluate differenet VO algorithms, thanks to the ground truth provided by the synthetic data.
 
-[![Watch the video](./imgs/1555007376821.png)](https://youtu.be/X0hx2vxxTMg)
+[![Watch the video](https://raw.githubusercontent.com/HamedJafarzadeh/VisualOdometry/master/imgs/1555007376821.png)](https://youtu.be/X0hx2vxxTMg)
 
 
 
